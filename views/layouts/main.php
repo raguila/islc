@@ -32,7 +32,7 @@ $bundle = AppAsset::register($this);
     <div class="wrap">
         <?php
             $isGuest = Yii::$app->user->isGuest;
-            $isAdmin = ((!$isGuest)&&(Yii::$app->user->identity->UserTypeID ==4));
+            $isAdmin = ((!$isGuest)&&(Yii::$app->user->identity->UserTypeID ==1));
             NavBar::begin([
                 'brandLabel' => 'Instructional Support for Large Classes',
                 'brandUrl' => Yii::$app->homeUrl,
@@ -44,8 +44,13 @@ $bundle = AppAsset::register($this);
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
                     $isAdmin?
+                    ['label' => 'Dashboard', 'url' => ['/site/feed']]:
+                    "",
+                    
+                    $isAdmin?
                     ['label' => 'Class List', 'url' => ['/site/list']]:
                     "",
+                    
                     ['label' => 'About Us', 'url' => ['/site/about']],
                     Yii::$app->user->isGuest ?
                         ['label' => 'Login', 'url' => ['/site/login']] :
