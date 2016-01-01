@@ -203,7 +203,16 @@ class SiteController extends Controller
         return $this->redirect('index.php?r=exams%2Fcreate',302);
     }
     
-
+    public function actionExam($id)
+    {
+        return $this->render('exam', ['id' => $id]);
+    }
+    
+    public function actionTest($id)
+    {
+        return $this->render('test', ['id' => $id]);
+    }
+    
      public function actionList()
     {
         $searchModel = new UsersSearch();

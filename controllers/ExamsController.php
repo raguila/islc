@@ -5,6 +5,10 @@ namespace app\controllers;
 use Yii;
 use app\models\Exams;
 use app\models\search\ExamsSearch;
+use app\models\ExamQuestion;
+use app\models\ExamQuestionChoices;
+use app\models\ExamStudent;
+use app\models\ExamStudentAnswer;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -25,6 +29,7 @@ class ExamsController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
+                    'addquestions' => ['post'],
                     'delete' => ['post'],
                 ],
             ],
@@ -67,9 +72,11 @@ class ExamsController extends Controller
     {
         $model = new Exams();
         
-        return $this->render('create', [
+        /*return $this->render('create', [
             'model' => $model,
-        ]);
+        ]);*/
+        
+        //return $this->redirect(['view', 'id' => 2, 'NumQuestions' => $model->NumQuestions]);
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->ExamId, 'NumQuestions' => $model->NumQuestions]);
@@ -126,5 +133,86 @@ class ExamsController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    public function actionAddquestions()
+    {
+        $curModel = null;
+        foreach (Yii::$app->request->post() as $name => $val)
+        {
+            echo htmlspecialchars($name . ': ' . $val) . "<br />";
+            
+            $model = null;
+            if ( substr($name, 0, 8) == 'question') {
+                $model = new ExamQuestion();
+                $model->Question = $val;
+                $model->ExamId = $_POST['ExamId'];
+                
+                $sql = "SELECT MAX(ExamQuestionId) AS ExamQuestionId FROM exam_question";
+                $max_id = ExamQuestion::findBySql($sql)->one();
+                $model->ExamQuestionId = $max_id->ExamQuestionId + 1;
+                
+                $model->save();
+                $curModel = $model;
+            }
+            else if ( substr($name, 0, 10) == 'choicedesc') {
+                $model = new ExamQuestionChoices();
+                $model->ChoiceDescription = $val;
+                $model->IsRightChoice = $_POST['isrightchoice' . substr($name,10, 12)];
+                $model->ExamQuestionId = $curModel->ExamQuestionId;
+                
+                $sql = "SELECT MAX(ExamQuestionChoicesId) AS ExamQuestionChoicesId FROM exam_question_choices";
+                $max_id = ExamQuestionChoices::findBySql($sql)->one();
+                $model->ExamQuestionChoicesId = $max_id->ExamQuestionChoicesId + 1;
+                
+                $model->save();
+            }
+        }
+        
+        return $this->redirect(['/site/feed']);
+    }
+    
+    public function actionSubmitexam()
+    {
+        $user = Yii::$app->user->identity;
+    
+        $examstudent = new ExamStudent();
+        $examstudent->ExamId = $_POST['ExamId'];
+        $examstudent->StudentId = $user->UserID;
+        
+        $sql = "SELECT MAX(ExamStudentId) AS ExamStudentId FROM exam_student";
+        $max_id = ExamStudent::findBySql($sql)->one();
+        $examstudent->ExamStudentId = $max_id->ExamStudentId + 1;
+        
+        $score = 0;
+        foreach (Yii::$app->request->post() as $name => $val)
+        {
+            if ($name != '_csrf' && $name != 'ExamId') {
+                $choice = ExamQuestionChoices::findOne($val);
+                if ($choice->IsRightChoice == 1) {
+                    $score++;
+                }
+            }
+        }
+        
+        $examstudent->Score = $score;
+        $examstudent->save();
+        
+        foreach (Yii::$app->request->post() as $name => $val)
+        {
+            if ($name != '_csrf' && $name != 'ExamId') {
+                $answer = new ExamStudentAnswer();
+                $answer->ExamQuestionChoiceId = $val;
+                $answer->UserId = $user->UserID;
+                
+                $sql2 = "SELECT MAX(ExamStudentAnswerId) AS ExamStudentAnswerId FROM exam_student_answer";
+                $max_id2 = ExamStudentAnswer::findBySql($sql2)->one();
+                $answer->ExamStudentAnswerId = $max_id2->ExamStudentAnswerId + 1;
+                
+                $answer->save();
+            }
+        }
+        
+        return $this->redirect(['/site/feed']);
     }
 }

@@ -47,11 +47,14 @@ $bundle = AppAsset::register($this);
         <br>
             
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-pull-3 col-lg-pull-3">
-          <?php $form = ActiveForm::begin(['options' => ['formaction' => 'site/about']]); ?>
-            <div class="form-inline">
-                <button onclick="showNewExam()" class='btn btn-primary pull-left newExam'>Create new exam</button>
-            </div>
-          <?php ActiveForm::end(); ?>
+          <?php $form = ActiveForm::begin();
+          if (Yii::$app->user->identity->UserTypeID != 3) {
+            echo '<div class="form-inline">';
+                echo '<button onclick="showNewExam()" class="btn btn-primary pull-left newExam">Create new exam</button>';
+            echo '</div>';
+          }
+            
+          ActiveForm::end(); ?>
         </div>
         
     </div>
@@ -71,7 +74,14 @@ $bundle = AppAsset::register($this);
                 <li class="list-group-item">
                 
                 <?php foreach ($exams as $exam): ?>
-                    <?php echo ($exam->Description); ?>
+                    <?php
+                    if ($exam->IsActive) {
+                        echo ( '<a href="index.php?r=site%2Fexam&id=' . $exam->ExamId . '">' . $exam->Description . '</a>' );
+                    } else {
+                        echo ( '<a>' . $exam->Description . '</a>' );
+                    }
+                    ?>
+                    <br />
                 <?php endforeach; ?>
                 </li>
             </ul>

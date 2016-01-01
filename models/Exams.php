@@ -31,7 +31,7 @@ class Exams extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['MaxScore', 'IsActive', 'SubjectSectionid'], 'integer'],
+            [['MaxScore', 'IsActive', 'SubjectSectionId', 'NumQuestions'], 'integer'],
             [['Message'], 'string', 'max' => 200],
             [['Description'], 'string', 'max' => 20]
         ];
@@ -49,7 +49,7 @@ class Exams extends \yii\db\ActiveRecord
             'MaxScore' => 'Max Score',
             'NumQuestions' => 'Number of Questions',
             'IsActive' => 'Is Active',
-            'SubjectSectionid' => 'Subject Section ID'
+            'SubjectSectionId' => 'Subject Section ID'
         ];
     }
 

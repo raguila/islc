@@ -5,12 +5,12 @@ namespace app\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Exams;
+use app\models\ExamStudent;
 
 /**
- * ExamsSearch represents the model behind the search form about `app\models\Exams`.
+ * ExamStudentSearch represents the model behind the search form about `app\models\ExamStudent`.
  */
-class ExamsSearch extends Exams
+class ExamStudentSearch extends ExamStudent
 {
     /**
      * @inheritdoc
@@ -18,8 +18,7 @@ class ExamsSearch extends Exams
     public function rules()
     {
         return [
-            [['ExamId', 'MaxScore', 'NumQuestions', 'IsActive', 'SubjectSectionId'], 'integer'],
-            [['Message', 'Description'], 'safe'],
+            [['ExamStudentId', 'Score', 'ExamId', 'StudentId'], 'integer'],
         ];
     }
 
@@ -41,7 +40,7 @@ class ExamsSearch extends Exams
      */
     public function search($params)
     {
-        $query = Exams::find();
+        $query = ExamStudent::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -52,13 +51,10 @@ class ExamsSearch extends Exams
         }
 
         $query->andFilterWhere([
+            'ExamStudentId' => $this->ExamStudentId,
+            'Score' => $this->Score,
             'ExamId' => $this->ExamId,
-            'Message' => $this->Message,
-            'Decription' => $this->Decription,
-            'MaxScore' => $this->MaxScore,
-            'NumQuestions' => $this->NumQuestions,
-            'IsActive' => $this->IsActive,
-            'SubjectSectionId' => $this->SubjectSectionId
+            'StudentId' => $this->StudentId,
         ]);
 
         return $dataProvider;

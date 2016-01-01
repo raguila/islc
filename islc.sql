@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 29, 2015 at 11:45 AM
+-- Generation Time: Jan 01, 2016 at 09:09 PM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -93,7 +93,8 @@ CREATE TABLE `exams` (
 --
 
 INSERT INTO `exams` (`ExamId`, `Message`, `Description`, `MaxScore`, `NumQuestions`, `IsActive`, `SubjectSectionId`) VALUES
-(1, 'This is your midterm exam. Multiple choice - select the best answer for the question. You can re-select your answer as long as you haven''t marked your exam as finished. 2pts each', 'Midterm Exam', 10, 0, 0, 1);
+(1, 'This is your midterm exam. Multiple choice - select the best answer for the question. You can re-select your answer as long as you haven''t marked your exam as finished. 2pts each', 'Midterm Examm', 2, 2, 1, 1),
+(2, 'this is a sample exam message. hi there!hope you do well in this exam', 'Test exam', 2, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -106,6 +107,14 @@ CREATE TABLE `exam_question` (
   `Question` varchar(200) NOT NULL,
   `ExamId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `exam_question`
+--
+
+INSERT INTO `exam_question` (`ExamQuestionId`, `Question`, `ExamId`) VALUES
+(2, 'who is skjdhfjksdf', 2),
+(3, 'why is ksbdfdf', 2);
 
 -- --------------------------------------------------------
 
@@ -120,6 +129,20 @@ CREATE TABLE `exam_question_choices` (
   `ExamQuestionId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `exam_question_choices`
+--
+
+INSERT INTO `exam_question_choices` (`ExamQuestionChoicesId`, `ChoiceDescription`, `IsRightChoice`, `ExamQuestionId`) VALUES
+(1, 'choice a', 1, 2),
+(2, 'choice b', 0, 2),
+(3, 'choice c', 0, 2),
+(4, 'choice d', 0, 2),
+(5, 'aaaa', 0, 3),
+(6, 'bbbbbb', 1, 3),
+(7, 'cccc', 0, 3),
+(8, 'ddddd', 0, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -133,6 +156,13 @@ CREATE TABLE `exam_student` (
   `StudentId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `exam_student`
+--
+
+INSERT INTO `exam_student` (`ExamStudentId`, `Score`, `ExamId`, `StudentId`) VALUES
+(1, 1, 2, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -140,10 +170,18 @@ CREATE TABLE `exam_student` (
 --
 
 CREATE TABLE `exam_student_answer` (
-  `ExamStudentAnswer` int(11) NOT NULL,
+  `ExamStudentAnswerId` int(11) NOT NULL,
   `ExamQuestionChoiceId` int(11) NOT NULL,
   `UserId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `exam_student_answer`
+--
+
+INSERT INTO `exam_student_answer` (`ExamStudentAnswerId`, `ExamQuestionChoiceId`, `UserId`) VALUES
+(1, 1, 1),
+(2, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -282,6 +320,14 @@ CREATE TABLE `subject_section` (
   `SubjectId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `subject_section`
+--
+
+INSERT INTO `subject_section` (`SubjectSectionId`, `SectionType`, `SectionName`, `SubjectId`) VALUES
+(1, 'Laboratory', 'EF-1L', 1),
+(2, 'Laboratory', 'EF-2L', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -393,7 +439,7 @@ ALTER TABLE `exam_student`
 -- Indexes for table `exam_student_answer`
 --
 ALTER TABLE `exam_student_answer`
-  ADD PRIMARY KEY (`ExamStudentAnswer`);
+  ADD PRIMARY KEY (`ExamStudentAnswerId`);
 
 --
 -- Indexes for table `notifications`
@@ -470,6 +516,11 @@ ALTER TABLE `user_type`
 --
 ALTER TABLE `comments`
   MODIFY `CommentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+--
+-- AUTO_INCREMENT for table `exams`
+--
+ALTER TABLE `exams`
+  MODIFY `ExamId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `notifications`
 --

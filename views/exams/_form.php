@@ -15,6 +15,8 @@ use yii\widgets\ActiveForm;
     <?php //$form->field($model, 'ExamId')->textInput(['type' => 'number']) ?>
 
     <?= $form->field($model, 'Message')->textArea(['maxlength' => 200]) ?>
+    
+    <?= $form->field($model, 'Description')->textInput(['maxlength' => 20]) ?>
 
     <?= $form->field($model, 'MaxScore')->textInput(['type' => 'number']) ?>
     
