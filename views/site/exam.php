@@ -55,12 +55,13 @@ $this->params['breadcrumbs'][] = $this->title;
             }
             
         echo '<input type="hidden" name="ExamId" value="'. $model->ExamId. '">';
+        ?>
         
-        echo '<div class="form-group">';
-        Html::submitButton('I am finished!', ['class' => 'btn btn-success']);
-        echo  '</div>';
+        <div class="form-group">
+            <?= Html::submitButton('I am finished!', ['class' => 'btn btn-success']); ?>
+        </div>
         
-        ActiveForm::end();
+        <?php ActiveForm::end();
     }
         
     
