@@ -14,6 +14,7 @@ use Yii;
  * @property integer $SubjectSectionid
  *
  * @property ExamQuestion[] $examQuestions
+ * @property SubjectSection $subjectSection
  */
 class Exams extends \yii\db\ActiveRecord
 {
@@ -33,7 +34,8 @@ class Exams extends \yii\db\ActiveRecord
         return [
             [['MaxScore', 'IsActive', 'SubjectSectionId', 'NumQuestions'], 'integer'],
             [['Message'], 'string', 'max' => 200],
-            [['Description'], 'string', 'max' => 20]
+            [['Description'], 'string', 'max' => 20],
+            [['CreatedBy'], 'string', 'max' => 100]
         ];
     }
 
@@ -46,10 +48,11 @@ class Exams extends \yii\db\ActiveRecord
             'ExamId' => 'Exam ID',
             'Message' => 'Message',
             'Description' => 'Description',
+            'CreatedBy' => 'Created By',
             'MaxScore' => 'Max Score',
             'NumQuestions' => 'Number of Questions',
             'IsActive' => 'Is Active',
-            'SubjectSectionId' => 'Subject Section ID'
+            'SubjectSectionId' => 'Section'
         ];
     }
 
@@ -59,5 +62,13 @@ class Exams extends \yii\db\ActiveRecord
     public function getExamQuestions()
     {
         return $this->hasMany(ExamQuestion::className(), ['ExamId' => 'ExamId']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubjectSection()
+    {
+        return $this->hasOne(SubjectSection::className(), ['SubjectSectionId' => 'SubjectSectionId']);
     }
 }

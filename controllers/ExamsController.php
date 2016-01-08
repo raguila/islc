@@ -78,8 +78,16 @@ class ExamsController extends Controller
         
         //return $this->redirect(['view', 'id' => 2, 'NumQuestions' => $model->NumQuestions]);
         
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->ExamId, 'NumQuestions' => $model->NumQuestions]);
+        if ($model->load(Yii::$app->request->post())) {
+            $fullname = Yii::$app->user->identity->FirstName . ' ' . Yii::$app->user->identity->LastName;
+            $model->CreatedBy = $fullname;
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->ExamId, 'NumQuestions' => $model->NumQuestions]);
+            }
+            
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         } else {
             return $this->render('create', [
                 'model' => $model,

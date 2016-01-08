@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\SubjectSection;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Exams */
@@ -23,8 +24,17 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'NumQuestions')->textInput(['type' => 'number']) ?>
 
     <?= $form->field($model, 'IsActive')->textInput(['type' => 'number']) ?>
-
-    <?= $form->field($model, 'SubjectSectionId')->textInput(['type' => 'number']) ?>
+    
+    <?php
+    $sections = SubjectSection::find()->where(['SectionType' => 'Laboratory'])->all();
+    $items = array();
+    foreach ($sections as $section) {
+        $items[$section->SubjectSectionId . ''] = $section->SectionName;
+    }
+    ?>
+    
+    
+    <?= $form->field($model, 'SubjectSectionId')->dropDownList($items) ?>
     
     
 

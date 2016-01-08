@@ -6,6 +6,7 @@ use app\models\Users;
 use app\models\Comments;
 use app\assets\AppAsset;
 use app\models\Exams;
+use app\models\SubjectSection;
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\LoginForm */
@@ -30,8 +31,18 @@ $bundle = AppAsset::register($this);
             <?= Yii::$app->user->identity->FirstName ?> 
             <?= Yii::$app->user->identity->LastName ?>
             <br>
-            IT 210 - 
-            <?= Yii::$app->user->identity->ClassSection ?>
+            <?php
+            
+            $userType = Yii::$app->user->identity->UserTypeID;
+            if ($userType == 1) {
+                echo 'Administrator';
+            } else if ($userType == 2) {
+                echo 'Professor';
+            } else if ($userType == 3) {
+                echo ('CMSC 2 - ');
+                echo Yii::$app->user->identity->ClassSection;
+            }
+            ?>
             <br>
             <?= Yii::$app->user->identity->StudentNumber ?>
             </div>
@@ -68,17 +79,20 @@ $bundle = AppAsset::register($this);
         </div>
         
         <div class="col-xs-12 col-sm-12 col-md-6 col-md-pull-3 col-lg-6 col-lg-pull-3">
-            <h4>Exams</h4>
+            <h4>Exams</h3>
             
             <ul class="list-group">
                 <li class="list-group-item">
                 
                 <?php foreach ($exams as $exam): ?>
                     <?php
-                    if ($exam->IsActive) {
-                        echo ( '<a href="index.php?r=site%2Fexam&id=' . $exam->ExamId . '">' . $exam->Description . '</a>' );
-                    } else {
-                        echo ( '<a>' . $exam->Description . '</a>' );
+                    $section = SubjectSection::findOne(['SubjectSectionId' => $exam->SubjectSectionId]);
+                    if (Yii::$app->user->identity->ClassSection == $section->SectionName) {
+                        if ($exam->IsActive) {
+                            echo ( '<a href="index.php?r=site%2Fexam&id=' . $exam->ExamId . '"><h4>' . $exam->Description .'</h4></a> created by ' . $exam->CreatedBy );
+                        } else {
+                            echo ( '<a>' . $exam->Description . '</a>' );
+                        }
                     }
                     ?>
                     <br />

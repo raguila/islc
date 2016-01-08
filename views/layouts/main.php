@@ -43,9 +43,7 @@ $bundle = AppAsset::register($this);
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
-                    $isAdmin?
-                    ['label' => 'Dashboard', 'url' => ['/site/feed']]:
-                    "",
+                    ['label' => 'Dashboard', 'url' => ['/site/feed']],
                     
                     $isAdmin?
                     ['label' => 'Class List', 'url' => ['/site/list']]:

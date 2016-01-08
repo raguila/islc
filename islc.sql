@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 01, 2016 at 09:09 PM
+-- Generation Time: Jan 08, 2016 at 01:48 PM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -80,8 +80,9 @@ INSERT INTO `comments` (`CommentID`, `CommentContent`, `Attachment`, `Attachment
 
 CREATE TABLE `exams` (
   `ExamId` int(11) NOT NULL,
-  `Message` varchar(200) NOT NULL,
-  `Description` varchar(20) NOT NULL,
+  `Message` varchar(600) NOT NULL,
+  `Description` varchar(80) NOT NULL,
+  `CreatedBy` varchar(100) NOT NULL,
   `MaxScore` int(11) NOT NULL,
   `NumQuestions` int(11) NOT NULL,
   `IsActive` tinyint(4) NOT NULL,
@@ -92,9 +93,8 @@ CREATE TABLE `exams` (
 -- Dumping data for table `exams`
 --
 
-INSERT INTO `exams` (`ExamId`, `Message`, `Description`, `MaxScore`, `NumQuestions`, `IsActive`, `SubjectSectionId`) VALUES
-(1, 'This is your midterm exam. Multiple choice - select the best answer for the question. You can re-select your answer as long as you haven''t marked your exam as finished. 2pts each', 'Midterm Examm', 2, 2, 1, 1),
-(2, 'this is a sample exam message. hi there!hope you do well in this exam', 'Test exam', 2, 2, 1, 1);
+INSERT INTO `exams` (`ExamId`, `Message`, `Description`, `CreatedBy`, `MaxScore`, `NumQuestions`, `IsActive`, `SubjectSectionId`) VALUES
+(1, 'This is your Midterm exam. You have 3 hours to answer this exam. You can submit your exam by pressing the "I am finished" button. You cannot resubmit your exam when you do this, so be careful to double check your answers before submitting. You can also see your score right after submission by going back to the exam. You may leave the room after you have taken the exam. You cannot talk to your classmates in the duration of the exam. If you have questions, raise your hand and a proctor will assist you.', 'Midterm Exam for AY 2015-2016', 'Louise Hanson', 10, 11, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -113,8 +113,17 @@ CREATE TABLE `exam_question` (
 --
 
 INSERT INTO `exam_question` (`ExamQuestionId`, `Question`, `ExamId`) VALUES
-(2, 'who is skjdhfjksdf', 2),
-(3, 'why is ksbdfdf', 2);
+(1, 'What is the World Wide Web?', 1),
+(2, 'Which is the best search tool for finding Web sites that have been handpicked and recommended by someone else?\r\n', 1),
+(3, 'The Internet was originally developed by whom?', 1),
+(4, 'Which description does NOT apply to the Internet?\r\n', 1),
+(5, 'Which one of the following is a search engine?\r\n', 1),
+(6, 'Which of the following is a TRUE statement?\r\n', 1),
+(7, 'What is a URL?\r\n', 1),
+(8, 'What are the three main search expressions, or operators, recognized by Boolean logic?\r\n', 1),
+(9, 'Which of the following is a true statement about the Internet and the library?\r\n', 1),
+(10, 'http://www.classzone.com is an example of what?\r\n', 1),
+(11, 'BONUS: What is the middle name of your lab instructor?', 1);
 
 -- --------------------------------------------------------
 
@@ -134,14 +143,50 @@ CREATE TABLE `exam_question_choices` (
 --
 
 INSERT INTO `exam_question_choices` (`ExamQuestionChoicesId`, `ChoiceDescription`, `IsRightChoice`, `ExamQuestionId`) VALUES
-(1, 'choice a', 1, 2),
-(2, 'choice b', 0, 2),
-(3, 'choice c', 0, 2),
-(4, 'choice d', 0, 2),
-(5, 'aaaa', 0, 3),
-(6, 'bbbbbb', 1, 3),
-(7, 'cccc', 0, 3),
-(8, 'ddddd', 0, 3);
+(1, 'a computer game', 0, 1),
+(2, 'a software program', 0, 1),
+(3, 'the part of the Internet that enables information-sharing via interconnected pages', 1, 1),
+(4, 'another name for the Internet', 0, 1),
+(5, 'subject directories', 1, 2),
+(6, 'search engines', 0, 2),
+(7, 'meta-search engines', 0, 2),
+(8, 'discussion groups', 0, 2),
+(9, 'computer hackers', 0, 3),
+(10, 'a corporation', 0, 3),
+(11, 'the U.S. Department of Defense', 1, 3),
+(12, 'the University of Michigan', 0, 3),
+(13, 'an interconnected system of networks that allows for communication through e-mail, LISTSERVS, and the World Wide Web', 0, 4),
+(14, 'a public network neither owned nor run by any one group or individual', 0, 4),
+(15, 'a vast network that connects millions of computers around the world', 0, 4),
+(16, 'a catalog of information organized and fact-checked by a governing body', 1, 4),
+(17, 'Macromedia Flash', 0, 5),
+(18, 'Google', 1, 5),
+(19, 'Netscape', 0, 5),
+(20, 'Librarians’ Index to the Internet', 0, 5),
+(21, 'You are free to copy information you find on the Web and include it in your research report.', 0, 6),
+(22, 'You do not have to cite the Web sources you use in your research report.', 0, 6),
+(23, 'You should never consult Web sources when you are doing a research report.', 0, 6),
+(24, 'Just like print sources, Web sources must be cited in your research report. You are not free to plagiarize information y', 1, 6),
+(25, 'a computer software program', 0, 7),
+(26, 'a type of UFO', 0, 7),
+(27, 'the address of a document or "page" on the World Wide Web', 1, 7),
+(28, 'an acronym for Unlimited Resources for Learning', 0, 7),
+(29, 'FROM, TO, WHOM', 0, 8),
+(30, 'AND, OR, NOT', 1, 8),
+(31, 'SEARCH, KEYWORD, TEXT', 0, 8),
+(32, 'AND, OR, BUT', 0, 8),
+(33, 'They both have an expert librarian or specialist to answer your questions.', 0, 9),
+(34, 'They both provide up-to-the-minute news and information.', 0, 9),
+(35, 'They both close after hours.', 0, 9),
+(36, 'They both provide access to newspapers, magazines, and journals.', 1, 9),
+(37, 'a URL', 1, 10),
+(38, 'an access code', 0, 10),
+(39, 'a directory', 0, 10),
+(40, 'a server', 0, 10),
+(41, 'Simpson', 1, 11),
+(42, 'Gray', 0, 11),
+(43, 'Cruz', 0, 11),
+(44, 'Ramos', 0, 11);
 
 -- --------------------------------------------------------
 
@@ -156,13 +201,6 @@ CREATE TABLE `exam_student` (
   `StudentId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `exam_student`
---
-
-INSERT INTO `exam_student` (`ExamStudentId`, `Score`, `ExamId`, `StudentId`) VALUES
-(1, 1, 2, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -174,14 +212,6 @@ CREATE TABLE `exam_student_answer` (
   `ExamQuestionChoiceId` int(11) NOT NULL,
   `UserId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `exam_student_answer`
---
-
-INSERT INTO `exam_student_answer` (`ExamStudentAnswerId`, `ExamQuestionChoiceId`, `UserId`) VALUES
-(1, 1, 1),
-(2, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -305,7 +335,8 @@ CREATE TABLE `subjects` (
 --
 
 INSERT INTO `subjects` (`SubjectId`, `CourseCode`, `CourseTitle`, `Units`) VALUES
-(1, 'CMSC 2', 'Introduction to the Internet', 3);
+(1, 'CMSC 2', 'Introduction to the Internet', 3),
+(2, 'IT 1', 'Information Technology', 3);
 
 -- --------------------------------------------------------
 
@@ -326,7 +357,8 @@ CREATE TABLE `subject_section` (
 
 INSERT INTO `subject_section` (`SubjectSectionId`, `SectionType`, `SectionName`, `SubjectId`) VALUES
 (1, 'Laboratory', 'EF-1L', 1),
-(2, 'Laboratory', 'EF-2L', 1);
+(2, 'Laboratory', 'EF-2L', 1),
+(3, 'Laboratory', 'UV-1L', 2);
 
 -- --------------------------------------------------------
 
@@ -366,6 +398,7 @@ CREATE TABLE `users` (
   `Password` varchar(50) NOT NULL,
   `UserTypeID` int(11) NOT NULL,
   `ClassSection` varchar(30) NOT NULL,
+  `SubjectSectionId` int(11) NOT NULL,
   `Picture` varchar(30) NOT NULL,
   `StudentNumber` varchar(15) NOT NULL,
   `EmployeeNumber` varchar(15) NOT NULL
@@ -375,8 +408,71 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`UserID`, `FirstName`, `MiddleName`, `LastName`, `UserName`, `Password`, `UserTypeID`, `ClassSection`, `Picture`, `StudentNumber`, `EmployeeNumber`) VALUES
-(1, 'John Joseph', 'Ramos', 'Sinang', 'jjsinang', '1a1dc91c907325c69271ddf0c944bc72', 1, 'EF-1L', '', '2009-08973', '');
+INSERT INTO `users` (`UserID`, `FirstName`, `MiddleName`, `LastName`, `UserName`, `Password`, `UserTypeID`, `ClassSection`, `SubjectSectionId`, `Picture`, `StudentNumber`, `EmployeeNumber`) VALUES
+(1, 'John Joseph', 'Ramos', 'Sinang', 'jjsinang', '1a1dc91c907325c69271ddf0c944bc72', 1, '', 1, '', '2009-08973', ''),
+(2, 'Jesse', 'Gray', 'Black', 'jblack1', '1a1dc91c907325c69271ddf0c944bc72', 1, '', 1, '', '2018-24044', '05591396142'),
+(3, 'Louise', 'Simpson', 'Hanson', 'lhanson2', '1a1dc91c907325c69271ddf0c944bc72', 2, 'EF-1L', 1, '', '2011-08975', '14366213895'),
+(4, 'Cynthia', 'Webb', 'Reed', 'creed3', '1a1dc91c907325c69271ddf0c944bc72', 2, 'EF-2L', 2, '', '2010-90889', '33800914145'),
+(5, 'Melissa', 'Day', 'Grant', 'mgrant4', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2017-06997', '14332646338'),
+(6, 'Harold', 'Larson', 'Long', 'hlong5', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2019-30101', '67270890705'),
+(7, 'Timothy', 'Thomas', 'Schmidt', 'tschmidt6', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2011-83321', '73436017948'),
+(8, 'Lori', 'Oliver', 'Foster', 'lfoster7', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2010-84557', '57165857815'),
+(9, 'Lisa', 'Duncan', 'Perry', 'lperry8', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2011-98606', '52211002519'),
+(10, 'Helen', 'Lee', 'Webb', 'hwebb9', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2012-96276', '58720706312'),
+(11, 'Michael', 'Griffin', 'Scott', 'mscotta', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2014-83487', '71886240811'),
+(12, 'James', 'Garcia', 'Mills', 'jmillsb', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2016-34617', '59409514748'),
+(13, 'Susan', 'Alexander', 'Robinson', 'srobinsonc', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2019-74922', '66849869781'),
+(14, 'Christine', 'Romero', 'Hunter', 'chunterd', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2019-82237', '18046200680'),
+(15, 'Stephanie', 'Jacobs', 'Walker', 'swalkere', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2016-42371', '72642655563'),
+(16, 'Billy', 'Burns', 'Long', 'blongf', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2015-70703', '44859423395'),
+(17, 'Nicole', 'Myers', 'Porter', 'nporterg', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2012-26335', '89976202383'),
+(18, 'Carol', 'Olson', 'Gonzalez', 'cgonzalezh', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2019-89892', '57904447256'),
+(19, 'Dennis', 'Marshall', 'Lee', 'dleei', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2016-26127', '42335210718'),
+(20, 'Steve', 'Ward', 'Mendoza', 'smendozaj', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2018-37564', '78257979246'),
+(21, 'Harold', 'Phillips', 'Medina', 'hmedinak', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2016-65763', '23960668607'),
+(22, 'Phyllis', 'Hansen', 'Butler', 'pbutlerl', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2012-94442', '22475917366'),
+(23, 'Gregory', 'Burns', 'Turner', 'gturnerm', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2013-56995', '77978377210'),
+(24, 'Thomas', 'Snyder', 'Foster', 'tfostern', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2018-54427', '34197958382'),
+(25, 'Mark', 'Rogers', 'West', 'mwesto', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2014-20808', '52614664129'),
+(26, 'Phillip', 'Chavez', 'Sanchez', 'psanchezp', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2013-96660', '00142351641'),
+(27, 'Amy', 'Lawson', 'Hamilton', 'ahamiltonq', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2015-58743', '31598798518'),
+(28, 'Dorothy', 'Barnes', 'Coleman', 'dcolemanr', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2013-04176', '98017065963'),
+(29, 'Randy', 'Dixon', 'Garrett', 'rgarretts', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2013-06578', '43674490384'),
+(30, 'Rachel', 'Henry', 'Turner', 'rturnert', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2014-37967', '12565048084'),
+(31, 'Debra', 'Marshall', 'Lee', 'dleeu', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2015-39824', '72447112511'),
+(32, 'Andrea', 'Kim', 'Tucker', 'atuckerv', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2010-67823', '48637607751'),
+(33, 'Charles', 'Reid', 'Reed', 'creedw', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2010-58126', '35266239857'),
+(34, 'Sharon', 'Rice', 'Bell', 'sbellx', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-1L', 1, '', '2010-35258', '03615353238'),
+(35, 'Jane', 'Kelly', 'Carpenter', 'jcarpentery', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2018-02379', '24794762420'),
+(36, 'Terry', 'Graham', 'Turner', 'tturnerz', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2018-95230', '94275492728'),
+(37, 'Billy', 'Richards', 'Alvarez', 'balvarez10', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2012-31644', '76776070830'),
+(38, 'Jerry', 'Murray', 'Johnson', 'jjohnson11', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2015-36504', '89568699050'),
+(39, 'Kelly', 'Ross', 'Franklin', 'kfranklin12', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2018-42551', '28077958640'),
+(40, 'Jack', 'Richardson', 'Richards', 'jrichards13', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2019-36004', '67817694996'),
+(41, 'Albert', 'Harrison', 'Olson', 'aolson14', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2013-94097', '66862092722'),
+(42, 'Stephanie', 'Howard', 'Black', 'sblack15', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2018-94204', '56553104676'),
+(43, 'Virginia', 'Montgomery', 'Stewart', 'vstewart16', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2017-39335', '10451068000'),
+(44, 'Judy', 'Kennedy', 'Romero', 'jromero17', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2013-30942', '53803362945'),
+(45, 'Todd', 'Meyer', 'Murray', 'tmurray18', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2014-82357', '36396208704'),
+(46, 'Lillian', 'Hansen', 'Hawkins', 'lhawkins19', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2016-12690', '84123326282'),
+(47, 'Helen', 'Ferguson', 'Coleman', 'hcoleman1a', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2012-29822', '29504327972'),
+(48, 'Earl', 'Peters', 'Chavez', 'echavez1b', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2017-58435', '07668912505'),
+(49, 'Stephanie', 'Rogers', 'Bennett', 'sbennett1c', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2017-96805', '87864965244'),
+(50, 'Nancy', 'Frazier', 'Hansen', 'nhansen1d', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2018-41525', '65801488392'),
+(51, 'Antonio', 'Washington', 'Perry', 'aperry1e', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2011-06463', '34484616714'),
+(52, 'Johnny', 'Kennedy', 'Watson', 'jwatson1f', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2013-50599', '92332218949'),
+(53, 'Frances', 'Robinson', 'Lane', 'flane1g', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2013-40291', '99114692793'),
+(54, 'Lori', 'Hudson', 'Hernandez', 'lhernandez1h', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2016-52884', '38791236665'),
+(55, 'Stephanie', 'King', 'Alexander', 'salexander1i', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2016-20451', '37409210540'),
+(56, 'Phillip', 'Brown', 'Carroll', 'pcarroll1j', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2016-12352', '80556874221'),
+(57, 'Roy', 'Day', 'Rivera', 'rrivera1k', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2014-14036', '72296677183'),
+(58, 'Jacqueline', 'Perry', 'Bryant', 'jbryant1l', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2017-66844', '50682215813'),
+(59, 'Ryan', 'Bradley', 'Griffin', 'rgriffin1m', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2016-77216', '12655635431'),
+(60, 'Sandra', 'Grant', 'Franklin', 'sfranklin1n', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2014-64907', '01108346692'),
+(61, 'Cheryl', 'King', 'Ross', 'cross1o', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2015-00499', '05825909358'),
+(62, 'Jennifer', 'Armstrong', 'Kennedy', 'jkennedy1p', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2016-52413', '37378100470'),
+(63, 'James', 'Garcia', 'Peterson', 'jpeterson1q', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2016-61565', '51656176817'),
+(64, 'John', 'Carroll', 'Harrison', 'jharrison1r', '1a1dc91c907325c69271ddf0c944bc72', 3, 'EF-2L', 2, '', '2017-50057', '40337726709');
 
 -- --------------------------------------------------------
 
@@ -520,7 +616,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `exams`
 --
 ALTER TABLE `exams`
-  MODIFY `ExamId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ExamId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `notifications`
 --
@@ -550,7 +646,7 @@ ALTER TABLE `tags`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 --
 -- AUTO_INCREMENT for table `user_type`
 --
